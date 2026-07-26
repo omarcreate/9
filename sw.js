@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pwa-cache-8825606461784250173281';
-const urlsToCache = [ './', './index.html', './offline.html', './icon-192.png', './icon-512.png', './manifest.json' ];
+const CACHE_NAME = 'pwa-cache-v1785047711247';
+const urlsToCache = [ './', './index.html?v=v1785047711247', './offline.html?v=v1785047711247', './icon-192.png?v=v1785047711247', './icon-512.png?v=v1785047711247', './manifest.json?v=v1785047711247' ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -24,25 +24,14 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then(networkResponse => {
-          return caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-        })
-        .catch(() => {
-          return caches.match(event.request) || caches.match('./index.html') || caches.match('./offline.html');
-        })
-    );
-  } else {
-    event.respondWith(
-      caches.match(event.request)
-        .then(response => {
-          return response || fetch(event.request);
-        })
-    );
-  }
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        return response || fetch(event.request).catch(() => {
+          if (event.request.mode === 'navigate') {
+            return caches.match('./offline.html?v=v1785047711247');
+          }
+        });
+      })
+  );
 });

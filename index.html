@@ -1,8 +1,9 @@
-<html lang="ar" dir="rtl"><head>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.3">
-    <title>  الشاملة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&amp;display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=0.2">
+    <title>.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6c5ce7;
@@ -23,6 +24,7 @@
             --numerology: #9b59b6; 
             --ascendant: #f1c40f; 
             --name-color: #e67e22; 
+            --chart-box: #1abc9c;
         }
 
         body {
@@ -249,7 +251,7 @@
             margin: 0;
             font-size: 1.05em;
             color: #ecf0f1;
-            white-space: pre-line; /* عشان يتعرف على السطور الجديدة في الشرح المكثف */
+            white-space: pre-line;
         }
 
         .pros { border-color: var(--success); }
@@ -259,6 +261,7 @@
         .numerology-box { border-color: var(--numerology); background: rgba(155, 89, 182, 0.05); }
         .ascendant-box { border-color: var(--ascendant); background: rgba(241, 196, 15, 0.05); }
         .name-box { border-color: var(--name-color); background: rgba(230, 126, 34, 0.05); }
+        .chart-box { border-color: var(--chart-box); background: rgba(26, 188, 156, 0.05); }
         .love { border-color: var(--love); }
         .work { border-color: var(--work); }
         .compat-box { border-color: var(--compat); background: rgba(0, 184, 148, 0.05); }
@@ -266,39 +269,73 @@
         .celebs-box { border-color: var(--celebs); background: rgba(232, 67, 147, 0.05); }
         .advice-box { border-color: var(--advice); background: rgba(9, 132, 227, 0.05); }
 
+        /* ستايل العجلة الفلكية المبسطة */
+        .astrology-wheel-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 4px solid var(--accent);
+            position: relative;
+            box-shadow: 0 0 20px rgba(253, 203, 110, 0.3);
+        }
+
+        .wheel-center {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border: 2px dashed #b2bec3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8em;
+            text-align: center;
+            color: #fff;
+        }
+
+        .planet-marker {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px solid;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        .sun-marker { color: #f1c40f; border-color: #f1c40f; }
+        .moon-marker { color: #74b9ff; border-color: #74b9ff; }
+        .asc-marker { color: #e74c3c; border-color: #e74c3c; font-size: 1em; }
+
         @media (max-width: 600px) {
             .form-row { flex-direction: column; gap: 0; }
             .tabs { flex-direction: column; }
+            .astrology-wheel-container { width: 250px; height: 250px; }
         }
     </style>
 
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#051a14">
-    <link rel="apple-touch-icon" href="./icon-192.png">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="manifest" href="./manifest.json?v=v1785047711247">
+    <meta name="theme-color" content="#632484">
+    <link rel="apple-touch-icon" href="./icon-192.png?v=v1785047711247">
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=2826323981783690094062')
-            .then(reg => {
-              console.log('SW Registered');
-              reg.update();
-            })
-            .catch(err => console.log('SW Failed', err));
-        });
-      }
-    </script>
-
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="./icon-192.png">
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=8825606461784250173281')
-            .then(reg => {
-              console.log('SW Registered');
-              reg.update();
-            })
+          navigator.serviceWorker.register('./sw.js?v=v1785047711247')
+            .then(reg => console.log('SW Registered'))
             .catch(err => console.log('SW Failed', err));
         });
       }
@@ -308,7 +345,7 @@
 
     <div class="container">
         <h1>✨FOR FUN الخريطة الفلكية الشاملة ✨</h1>
-        <div class="subtitle">دليلك الكامل لمعرفة أسرار وشخصيات الأبراج شامل الطالع، علم الأرقام، وتحليل طاقة الاسم بدقة متناهية</div>
+        <div class="subtitle">دليلك الكامل لمعرفة أسرار وشخصيات الأبراج شامل الطالع، الخريطة الدائرية، وعلم الأرقام بدقة متناهية</div>
         
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('personal')">حاسبة الأبراج الشخصية</button>
@@ -338,7 +375,7 @@
                     <input type="text" id="birthdate" placeholder="مثال: 25/08/1995" dir="ltr" style="text-align: right;" required="">
                 </div>
                 <div class="form-group">
-                    <label for="birthtime">ساعة الولادة <span class="optional-badge">مهمة لحساب الطالع</span></label>
+                    <label for="birthtime">ساعة الولادة <span class="optional-badge">مهمة لحساب الطالع والخريطة</span></label>
                     <input type="text" id="birthtime" placeholder="مثال: 14:30" dir="ltr" style="text-align: right;" title="عشان نحسب الطالع بدقة لازم تكتب الساعة">
                 </div>
             </div>
@@ -410,6 +447,45 @@
                 <div class="badges-container">
                     <div class="badge" id="zElement"></div>
                     <div class="badge" id="zPlanet"></div>
+                </div>
+            </div>
+
+            <!-- شكل الخريطة الدائرية والشرح المفصل (جديد) -->
+            <div class="info-box chart-box" id="visualChartBox">
+                <h3>🌌 رسم خريطتك الفلكية (أماكن الكواكب):</h3>
+                <p>الدايرة دي بتوضح أماكن أهم 3 نقط في شخصيتك (الشمس، القمر، والطالع) وقت ولادتك بالظبط:</p>
+                
+                <div class="astrology-wheel-container" id="wheelContainer">
+                    <div class="wheel-center">خريطة<br>السماء</div>
+                    <div id="sunMarker" class="planet-marker sun-marker" title="البرج الشمسي">☀️</div>
+                    <div id="moonMarker" class="planet-marker moon-marker" title="البرج القمري">🌙</div>
+                    <div id="ascMarker" class="planet-marker asc-marker" title="الطالع">🌅</div>
+                </div>
+                
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.2);">
+                    <strong style="color: var(--accent); font-size: 1.2em;">إزاي تقرأ الخريطة اللي في الصورة؟ (شرح مبسط جداً)</strong><br><br>
+                    بص يا سيدي، الخريطة الفلكية اللي بتشوفها عبارة عن دايرة مليانة رموز زي الصورة بالظبط، دي ببساطة "سكرين شوت" لشكل السما وقت وتاريخ ومكان ولادتك بالمللي. تعال افصصهالك بالعامية عشان تبقى خبير:<br><br>
+                    
+                    <strong>1. الدايرة الكبيرة (البيوت الفلكية 🏠):</strong><br>
+                    الدايرة متقسمة لـ 12 حتة زي حتت البيتزا، كل حتة اسمها "بيت". كل بيت بيمثل جانب في حياتك (البيت الـ 1: شخصيتك ومظهرك، البيت الـ 2: فلوسك، البيت الـ 4: عيلتك، البيت الـ 7: الجواز والشراكة، البيت الـ 10: شغلك وسمعتك). الكوكب اللي بيقع في بيت معين بيدي طاقته للجانب ده من حياتك.<br><br>
+
+                    <strong>2. الرموز اللي جوه الدايرة (الكواكب 🪐):</strong><br>
+                    دي الممثلين اللي بيلعبوا أدوار جوه دماغك:<br>
+                    • ☀️ <strong>الشمس:</strong> دي هويتك الأساسية وغرورك (برجك العادي).<br>
+                    • 🌙 <strong>القمر:</strong> ده مشاعرك، رد فعلك الداخلي، وإزاي بتحب وتزعل.<br>
+                    • 🌅 <strong>الطالع (AC):</strong> ده الماسك اللي بتلبسه للناس، وانطباعهم الأول عنك.<br>
+                    • ♀️ <strong>الزهرة (Venus):</strong> ده كوكب الحب، الجمال، والفلوس، بيحدد إنت بتحب إزاي وذوقك إيه.<br>
+                    • ♂️ <strong>المريخ (Mars):</strong> ده كوكب الأكشن، الغضب، والطاقة، بيحدد إزاي بتاخد حقك وتتخانق.<br>
+                    • ☿️ <strong>عطارد (Mercury):</strong> ده كوكب العقل، التواصل، وإزاي بتفكر وتتكلم.<br>
+                    • ♃ <strong>المشتري (Jupiter):</strong> كوكب الحظ والتفاؤل والتوسع.<br>
+                    • ♄ <strong>زحل (Saturn):</strong> كوكب الكارما، الدروس القاسية، والمسؤولية.<br><br>
+
+                    <strong>3. الخطوط الحمرا والزرقا في النص (الاتصالات 🔗):</strong><br>
+                    شايف الشبكة اللي في نص الدايرة؟ دي عبارة عن زوايا هندسية بين الكواكب وبعضها (بتكلموا بعض إزاي):<br>
+                    • <strong>الخطوط الزرقا أو الخضرا 🔵:</strong> دي "اتصالات إيجابية" (تثليث أو تسديس). معناها إن الكوكبين دول متصالحين وبيدعموا بعض، يعني حظ حلو ومواهب فطرية عندك.<br>
+                    • <strong>الخطوط الحمرا 🔴:</strong> دي "اتصالات صعبة" (تربيع أو مقابلة). معناها إن في خناقة بين الكوكبين دول، ودي بتمثل التحديات، العقد النفسية، أو الصعوبات اللي محتاج تبذل مجهود عشان تتخطاها في حياتك وتطور من نفسك.<br><br>
+                    
+                    <em>الخلاصة:</em> إنت مش مجرد برجك الشمسي (أنا حمل أو أنا ثور)، إنت ميكس من كل الكواكب دي في بيوت مختلفة، وعشان كده مستحيل تلاقي اتنين برج الحمل أو الثور متطابقين 100%!
                 </div>
             </div>
             
@@ -571,7 +647,7 @@
             "البقرة": "برجك الصيني البقرة 🐮: إنت شخص يعتمد عليه بجد، إنت المعنى الحقيقي للثبات والقوة. صبور لأبعد الحدود، مجتهد في شغلك بشكل يفوق طاقة البشر، ومبتهربش أبداً من المسؤولية مهما كانت تقيلة. الناس بتثق فيك لأنك مبتخونش ومبتلفش وتدور. عيبك القاتل إنك عنيد جداً، ولما بتاخد قرار مستحيل ترجع فيه حتى لو عرفت إنه غلط. كمان مبتحبش التغيير المفاجئ وبتحب الروتين اللي بيحسسك بالأمان. في العاطفة، إنت مخلص جداً وعلاقاتك بتدوم لسنين طويلة لأنك بتبنيها على أساس متين.",
             "النمر": "برجك الصيني النمر 🐯: إنت شخص شجاع، مغامر، واثق في نفسك جداً لدرجة ممكن توصل للغرور أحياناً. بتحب التحديات ومبتخافش من المواجهة حتى لو قدام مين. روحك قيادية بالفطرة، والناس بتنجذب لشخصيتك المتمردة والقوية. لكن من الناحية التانية، إنت ممكن تكون متهور جداً وبتاخد ريسك كبير في الفلوس والمشاعر من غير ما تفكر في العواقب. بتكره القيود ومبتحبش حد يقولك تعمل إيه. في الحب، إنت شغوف جداً وعلاقاتك دايماً مليانة أكشن وإثارة، بس بتزهق لو العلاقة بقت مملة.",
             "الأرنب": "برجك الصيني الأرنب 🐰: إنت شخص لطيف، دبلوماسي، وذوقك عالي جداً في كل حاجة بتختارها. بتهرب من المشاكل والصوت العالي والمواجهات، وبتحب تعيش في سلام وهدوء. الناس بترتاحلك جداً لأنك مستمع جيد، حنون، ومبتجرحش حد بكلامك. عندك قدرة تفاوض عبقرية بتخليك توصل للي إنت عايزه بالسياسة والهدوء مش بالخناق. عيبك إنك ممكن تكون متشائم أحياناً أو بتهرب من مسؤولياتك لو حسيت بضغط نفسي. في الحب، إنت رومانسي جداً وبتحتاج شريك يحسسك بالأمان والدلع طول الوقت.",
-            "التنين": "برجك الصيني التنين 🐉: إنت شخص مليان طاقة وحيوية متخلصش! كاريزما طاغية، محظوظ بطبعك، وطموحك ملوش أي سقف. بتحب دايماً تكون في القمة ومحط أنظار الجميع، ومبتقبلش بدور التابع أو الموظف العادي. عندك ثقة بالنفس بتخليك تحقق المستحيل، بس أحياناً بتكون ديكتاتور في رأيك ومبتسمعش نصيحة حد. إنت كريم جداً ومبتتأخرش عن مساعدة اللي حواليك، بس بتطلب منهم ولاء تام في المقابل. في العاطفة، إنت بتدور على شريك قوي يفتخر بيك وتفتخر بيه، وعلاقاتك دايماً استثنائية.",
+            "التنين": "برجك الصيني التنين 🐉: إنت شخص مليان طاقة وحيوية متخلصش! كاريزما طاغية، محظوظ بطبعك، وطموحك ملوش أي سقف. بتحب دايماً تكون في القمة ومحط أنظار الجميع، ومبتقبلش بدور التابع أو الموظف العادي. عندك ثقة بالنفس بتخليك تحقيق المستحيل، بس أحياناً بتكون ديكتاتور في رأيك ومبتسمعش نصيحة حد. إنت كريم جداً ومبتتأخرش عن مساعدة اللي حواليك، بس بتطلب منهم ولاء تام في المقابل. في العاطفة، إنت بتدور على شريك قوي يفتخر بيك وتفتخر بيه، وعلاقاتك دايماً استثنائية.",
             "الثعبان": "برجك الصيني الثعبان 🐍: إنت شخص حكيم، غامض، وذكي جداً لدرجة الدهاء. عندك حاسة سادسة بتخليك تحس بالأمور قبل ما تحصل وتقرأ نوايا اللي حواليك بسهولة. مبتحبش الثرثرة والكلام الكتير، وبتخطط لخطواتك في هدوء وصمت تام لحد ما توصل لهدفك وتفاجئ الكل. بتحب الرفاهية والجمال والفلوس بالنسبة لك وسيلة للعيشة المرتاحة. عيبك إنك شكاك جداً وغيور وتملكي لأبعد الحدود. في الحب، إنت جذاب جداً وساحر، بس لما بترتبط بحد بتقفل عليه ومش بتسمح لأي حد يقرب منه.",
             "الحصان": "برجك الصيني الحصان 🐴: إنت شخص نشيط، حر، ومبتحبش القيود نهائياً كأنك حصان بري منطلق. اجتماعي جداً، روحك خفيفة، وبتعرف تعمل صحاب في أي مكان تروحه بسرعة البرق. عقلك شغال دايماً وعندك أفكار مبتكرة، بس مشكلتك الأكبر إنك بتمل بسرعة رهيبة وبتحتاج تغير روتين حياتك وأهدافك دايماً، وده بيخليك تسيب مشاريع كتير في النص من غير ما تكملها. إنت صريح جداً ومبتعرفش تخبي مشاعرك. في الحب، إنت بتندفع بكل مشاعرك في البداية، بس ممكن تطفش لو حسيت إن الشريك بيخنقك.",
             "العنزة": "برجك الصيني العنزة 🐐: إنت شخص فنان بطبعك، رقيق، عاطفي، وحساس لأقصى درجة. بتحب الجمال، الطبيعة، الهدوء، وبتتجنب الصراعات والمنافسة الشرسة اللي في سوق العمل. عندك خيال واسع ومبدع في أي حاجة بتعملها بإيدك. لكن أحياناً بتحتاج حد يزقك ويدعمك نفسياً ومادياً عشان تطلع أحسن ما عندك، لأنك بتشك في قدراتك كتير. عيبك إنك ممكن تكون اعتمادي على غيرك أو مزاجي جداً ومكتئب بدون أسباب واضحة. في الحب، إنت بتحتاج حنان ورعاية مفرطة، وبترد ده بحب وإخلاص ملهمش مثيل.",
@@ -893,6 +969,28 @@
             return signsList[ascendantIndex];
         }
 
+        // الدالة المسئولة عن رسم الكواكب على العجلة الفلكية المبسطة
+        function placePlanetOnWheel(markerId, signName) {
+            const signsList = ["الحمل", "الثور", "الجوزاء", "السرطان", "الأسد", "العذراء", "الميزان", "العقرب", "القوس", "الجدي", "الدلو", "الحوت"];
+            const index = signsList.indexOf(signName);
+            if (index === -1) return;
+
+            // حساب الزاوية (كل برج بياخد 30 درجة من الدايرة ال 360)
+            // الحمل بيبدأ من اليمين (0 درجة) ويلف عكس عقارب الساعة زيه زي الخريطة الحقيقية
+            const angle = -(index * 30); 
+            const radius = 110; // المسافة من المركز
+
+            const rad = angle * (Math.PI / 180);
+            const x = Math.cos(rad) * radius;
+            const y = Math.sin(rad) * radius;
+
+            const marker = document.getElementById(markerId);
+            if(marker) {
+                // نظبط المكان بناءً على المركز
+                marker.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        }
+
         function renderZodiacData(sign, gender, isPersonal, moonSign = null, chineseSign = null, lifePath = null, ascendantSign = null, isTimeProvided = false, userName = null, nameNumber = null, userCountry = null, userCity = null) {
             const data = zodiacData[sign];
             const resultDiv = document.getElementById("result");
@@ -926,6 +1024,20 @@
             document.getElementById("zPros").innerText = data.pros;
             document.getElementById("zCons").innerText = data.cons;
             document.getElementById("zAdvice").innerText = data.advice;
+
+            // إظهار أو إخفاء قسم الخريطة الدائرية
+            const visualChartBox = document.getElementById("visualChartBox");
+            if (isPersonal && isTimeProvided && ascendantSign && moonSign) {
+                visualChartBox.style.display = "block";
+                // رسم الأماكن على العجلة
+                setTimeout(() => {
+                    placePlanetOnWheel("sunMarker", sign);
+                    placePlanetOnWheel("moonMarker", moonSign);
+                    placePlanetOnWheel("ascMarker", ascendantSign);
+                }, 100);
+            } else {
+                visualChartBox.style.display = "none";
+            }
 
             // قسم الطالع
             const ascendantBox = document.getElementById("ascendantBox");
@@ -1056,4 +1168,5 @@
         }
     </script>
 
-</body></html>
+</body>
+</html>
