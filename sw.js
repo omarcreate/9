@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-cache-2826323981783690094062';
+const CACHE_NAME = 'pwa-cache-8825606461784250173281';
 const urlsToCache = [ './', './index.html', './offline.html', './icon-192.png', './icon-512.png', './manifest.json' ];
 
 self.addEventListener('install', event => {
